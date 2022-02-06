@@ -2,58 +2,27 @@
 
 namespace LoggingKata
 {
-    /// <summary>
-    /// Parses a POI file to locate all the Taco Bells
-    /// </summary>
+    // Parses a POI file to locate all the Taco Bells
     public class TacoParser
     {
         readonly ILog logger = new TacoLogger();
         
         public ITrackable Parse(string line)
         {
-            logger.LogInfo("Begin parsing: " + line);
-
-            // Take your line and use line.Split(',') to split it up into an array of strings, separated by the char ','
             var cells = line.Split(',');
-
-         
-
-            // If your array.Length is less than 3, something went wrong
-            if (cells.Length < 3)
+            
+            if (cells.Length < 3) // checks if the row is missing latitude, longitude, or name
             {
-                // Log that and return null
-                logger.LogWarning("The line contained fewer than 3 elements.");
-                // Do not fail if one record parsing fails, return null
-                return null; // TODO Implement
+                logger.LogWarning($"This line contained fewer than 3 elements: {cells}");
+                return null;
             }
-
-            // grab the latitude from your array at index 0
-
+            
             double latitude = Convert.ToDouble(cells[0]);
-
-            // grab the longitude from your array at index 1
-
             double longitude = Convert.ToDouble(cells[1]);
-
-            // grab the name from your array at index 2
-
             string name = cells[2];
 
-            // Your going to need to parse your string as a `double`
-            // which is similar to parsing a string as an `int`
-
-            // You'll need to create a TacoBell class
-            // that conforms to ITrackable
-
-            // Then, you'll need an instance of the TacoBell class
-            // With the name and point set correctly
-
-            var restaurant = new TacoBell(latitude, longitude, name);
-            
-            // Then, return the instance of your TacoBell class
-            // Since it conforms to ITrackable
-
-            return restaurant;
+            var restaurant = new TacoBell(latitude, longitude, name);         
+            return restaurant; // returns the info as an object with 3 properties
         }
     }
 }
